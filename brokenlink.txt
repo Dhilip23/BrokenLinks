@@ -1,0 +1,53 @@
+package automationProject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class BrokenLink {
+
+	public static void main(String[] args) throws MalformedURLException, IOException {
+		System.setProperty("webdriver.gecko.driver", "E:\\geckodriver-v0.30.0-win64\\geckodriver.exe");
+		WebDriver driver = new FirefoxDriver();
+		driver.get("http://www.google.com");
+
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		int size = links.size();
+		System.out.println(size);
+
+		List<WebElement> actuallink = new ArrayList<WebElement>();
+
+		for (WebElement e : links) {
+			if (e.getAttribute("href") != null) {
+				actuallink.add(e);
+			}
+			
+			
+		}
+			for (int i = 0; i < actuallink.size(); i++) {
+
+				
+				  HttpURLConnection url = (HttpURLConnection) new
+				  URL(actuallink.get(i).getAttribute("href")).openConnection();
+				  url.getContent(); url.connect();
+				 String message =url.getResponseMessage();
+				  
+				  
+				  System.out.println(actuallink.get(i).getAttribute("href")+" " +message);
+
+			}
+			
+
+		}
+
+	}
+
+
